@@ -1,70 +1,77 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
-const BreweryDetails = ({id}) => {
+const BreweryDetails = () => {
   const [brewery, setBrewery] = useState({});
   const [ratings, setRatings] = useState([]);
+  const location = useLocation();
+
+  // Parse the query parameters
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get("id");
+  const rating = queryParams.get("rating");
 
   useEffect(() => {
     // Fetch brewery details
-    fetch('/api/brewery/id')
-      .then(response => response.json())
-      .then(data => setBrewery(data));
+    fetch(`https://api.openbrewerydb.org/v1/breweries/${id}`)
+      .then((response) => response.json())
+      .then((data) => setBrewery(data));
 
     // Fetch ratings
-    fetch('/api/ratings')
-      .then(response => response.json())
-      .then(data => setRatings(data));
-  }, []);
+    fetch("/api/ratings")
+      .then((response) => response.json())
+      .then((data) => setRatings(data));
+  }, [id]);
 
   const handleRatingSubmit = (rating, comment) => {
     // Submit rating
-    fetch('/api/ratings', {
-      method: 'POST',
+    fetch("/api/ratings", {
+      method: "POST",
       body: JSON.stringify({ rating, comment }),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         // Refetch ratings
-        fetch('/api/ratings')
-          .then(response => response.json())
-          .then(data => setRatings(data));
+        fetch("/api/ratings")
+          .then((response) => response.json())
+          .then((data) => setRatings(data));
       });
   };
 
   const handleRatingEdit = (ratingId, newRating, newComment) => {
     // Edit rating
     fetch(`/api/ratings/${ratingId}`, {
-      method: 'PUT',
+      method: "PUT",
       body: JSON.stringify({ rating: newRating, comment: newComment }),
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     })
-      .then(response => response.json())
-      .then(data => {
+      .then((response) => response.json())
+      .then((data) => {
         // Refetch ratings
-        fetch('/api/ratings')
-          .then(response => response.json())
-          .then(data => setRatings(data));
+        fetch("/api/ratings")
+          .then((response) => response.json())
+          .then((data) => setRatings(data));
       });
   };
 
   return (
     <div>
       <h3>{brewery.name}</h3>
-      <p>{brewery.address}</p>
+      <p>{brewery.adress}</p>
       <p>{brewery.phone}</p>
       <a href={brewery.website}>{brewery.website}</a>
-      <p>Rating: {brewery.rating}</p>
+      <p>Rating: {rating}</p>
       <p>
         {brewery.state}, {brewery.city}
       </p>
 
       {/* Display ratings */}
-      {ratings.map(rating => (
+      {ratings.map((rating) => (
         <div key={rating.id}>
           <p>Rating: {rating.rating}</p>
           <p>Comment: {rating.comment}</p>
@@ -79,9 +86,16 @@ const BreweryDetails = ({id}) => {
       </form>
 
       {/* Edit rating form */}
-      {ratings.map(rating => (
+      {ratings.map((rating) => (
         <form key={rating.id} onSubmit={handleRatingEdit}>
-          <input type="number" min="1" max="5" step="1" defaultValue={rating.rating} required />
+          <input
+            type="number"
+            min="1"
+            max="5"
+            step="1"
+            defaultValue={rating.rating}
+            required
+          />
           <input type="text" defaultValue={rating.comment} required />
           <button type="submit">Edit Rating</button>
         </form>

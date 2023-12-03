@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const BreweryCard = ({ id, name, adress, phone, website, state, city }) => {
-  // const history = useHistory();
+  const navigate = useNavigate();
   const [rating, setRating] = useState(0);
 
   useEffect(() => {
@@ -18,9 +19,8 @@ const BreweryCard = ({ id, name, adress, phone, website, state, city }) => {
   }, [id]);
 
   const handleClick = () => {
-    // history.push(`/brewery/${id}`);
+    navigate(`/brewerysearch?id=${id}&rating=${rating}`);
   };
-
   return (
     <div
       className="brewery-card"
