@@ -37,6 +37,7 @@ const BrewerySearch = () => {
   useEffect(() => {
     // Load initial data when the page loads
     searchBreweries();
+    // eslint-disable-next-line
   }, []); // Empty dependency array ensures it runs only once on mount
 
   return (
