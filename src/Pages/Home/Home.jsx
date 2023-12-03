@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import BreweryCard from "../../Components/BrewryCard/BrewryCard";
 
 const BrewerySearch = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -81,12 +82,14 @@ const BrewerySearch = () => {
           {breweries.length > 0 ? (
             <div>
               {breweries.map((brewery) => (
-                <div key={brewery.id}>
-                  <h2>{brewery.name}</h2>
-                  <p>{brewery.city}</p>
-                  <p>{brewery.state}</p>
-                  <p>{brewery.website_url}</p>
-                </div>
+                <BreweryCard
+                  id={brewery.id}
+                  name={brewery.name}
+                  phone={brewery.phone}
+                  website={brewery.website_url}
+                  adress={brewery.street}
+                  city={brewery.city}
+                  state={brewery.state}></BreweryCard>
               ))}
             </div>
           ) : (

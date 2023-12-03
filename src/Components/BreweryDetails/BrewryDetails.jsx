@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-const BreweryDetails = () => {
+const BreweryDetails = ({id}) => {
   const [brewery, setBrewery] = useState({});
   const [ratings, setRatings] = useState([]);
 
   useEffect(() => {
     // Fetch brewery details
-    fetch('/api/brewery')
+    fetch('/api/brewery/id')
       .then(response => response.json())
       .then(data => setBrewery(data));
 

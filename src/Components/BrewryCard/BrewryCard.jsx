@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 
-const BreweryCard = ({ id, name, address, phone, website, state, city }) => {
-  const history = useHistory();
+const BreweryCard = ({ id, name, adress, phone, website, state, city }) => {
+  // const history = useHistory();
   const [rating, setRating] = useState(0);
 
   useEffect(() => {
@@ -19,19 +18,30 @@ const BreweryCard = ({ id, name, address, phone, website, state, city }) => {
   }, [id]);
 
   const handleClick = () => {
-    history.push(`/brewery/${id}`);
+    // history.push(`/brewery/${id}`);
   };
 
   return (
-    <div className="brewery-card" onClick={handleClick}>
+    <div
+      className="brewery-card"
+      onClick={handleClick}
+      style={{
+        border: "1px solid black",
+        padding: "1rem",
+        margin: "1rem",
+        borderRadius: "5px",
+        cursor: "pointer",
+      }}>
       <h3>{name}</h3>
-      <p>{address}</p>
       <p>{phone}</p>
       <a href={website}>{website}</a>
-      <p>Rating: {rating}</p>
+
+      <p>{adress}</p>
       <p>
         {state}, {city}
       </p>
+
+      <p>Rating: {rating}</p>
     </div>
   );
 };
