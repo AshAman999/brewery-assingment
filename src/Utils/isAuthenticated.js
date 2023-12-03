@@ -1,7 +1,7 @@
-
 import { verify } from 'jsonwebtoken';
 
-function isAuthenticated(token) {
+function isAuthenticated() {
+  const token = localStorage.getItem("token");
   try {
     // Verify the token
     const decoded = verify(token, 'your_secret_key');
