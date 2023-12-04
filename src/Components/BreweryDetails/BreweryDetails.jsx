@@ -18,9 +18,15 @@ const BreweryDetails = () => {
       .then((data) => setBrewery(data));
 
     // Fetch ratings
-    fetch("/api/ratings")
+    fetch("http://localhost:4000/brewery/1", {
+      // pass authentication headers
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    })
       .then((response) => response.json())
-      .then((data) => setRatings(data))
+      // .then((data) => setRatings(data))
       .then((data) => console.log(data));
   }, [id]);
 
