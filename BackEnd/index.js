@@ -2,8 +2,10 @@ const express = require("express");
 const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const cors = require("cors"); // Add this line
 
 const app = express();
+app.use(cors()); // And this line
 const port = 4000;
 
 // MySQL connection
