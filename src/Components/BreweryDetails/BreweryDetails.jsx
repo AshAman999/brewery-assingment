@@ -9,7 +9,7 @@ const BreweryDetails = () => {
   // Parse the query parameters
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
-  const rating = queryParams.get("rating");
+  const [rating, setRating] = useState(2);
 
   useEffect(() => {
     // Fetch brewery details
@@ -18,7 +18,7 @@ const BreweryDetails = () => {
       .then((data) => setBrewery(data));
 
     // Fetch ratings
-    fetch("http://localhost:4000/brewery/1", {
+    fetch(`http://localhost:4000/brewery/${id}`, {
       // pass authentication headers
       headers: {
         "Content-Type": "application/json",
@@ -27,25 +27,26 @@ const BreweryDetails = () => {
     })
       .then((response) => response.json())
       // .then((data) => setRatings(data))
+      .then((data) => setRating(data.avgRating))
       .then((data) => console.log(data));
   }, [id]);
 
   const handleRatingSubmit = (rating, comment) => {
     // Submit rating
-    fetch("/api/ratings", {
+    fetch(`http://localhost:4000/rating}`, {
       method: "POST",
-      body: JSON.stringify({ rating, comment }),
+      body: JSON.stringify({ breweryId: id, rating, comment }),
       headers: {
         "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
       },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        // Refetch ratings
-        fetch("/api/ratings")
-          .then((response) => response.json())
-          .then((data) => setRatings(data));
-      });
+    }).then((response) => response.json());
+    // .then((data) => {
+    //   // Refetch ratings
+    //   fetch("/api/ratings")
+    //     .then((response) => response.json())
+    //     .then((data) => setRatings(data));
+    // });
   };
 
   const handleRatingEdit = (ratingId, newRating, newComment) => {
