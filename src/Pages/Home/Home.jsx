@@ -6,6 +6,8 @@ const BrewerySearch = () => {
   const [searchType, setSearchType] = useState("by_city"); // Default search type is by city
   const [breweries, setBreweries] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1); // New state for current page
+  const [totalPages, setTotalPages] = useState(null); // New state for total pages
 
   const breweryTypes = [
     "micro",
@@ -24,10 +26,11 @@ const BrewerySearch = () => {
     try {
       setLoading(true);
       const response = await fetch(
-        `https://api.openbrewerydb.org/v1/breweries?${searchType}=${searchInput}&per_page=5`
+        `https://api.openbrewerydb.org/v1/breweries?${searchType}=${searchInput}&page=${page}&per_page=5`
       );
       const data = await response.json();
       setBreweries(data);
+      setTotalPages(Math.ceil(data.length / 5)); // Update total pages
     } catch (error) {
       console.error(error);
     } finally {
@@ -36,10 +39,9 @@ const BrewerySearch = () => {
   };
 
   useEffect(() => {
-    // Load initial data when the page loads
     searchBreweries();
     // eslint-disable-next-line
-  }, []); // Empty dependency array ensures it runs only once on mount
+  }, [page]); // Add page to dependency array
 
   return (
     <div className="container">
@@ -97,6 +99,13 @@ const BrewerySearch = () => {
           )}
         </div>
       )}
+
+      <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+        Previous
+      </button>
+      <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+        Next
+      </button>
     </div>
   );
 };
