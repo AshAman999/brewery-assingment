@@ -88,7 +88,16 @@ const BreweryDetails = () => {
 
       {/* Display ratings */}
       {ratings.map((rating) => (
-        <div key={rating.id}>
+        <div
+          key={rating.id}
+          style={{
+            border: "1px solid black",
+            padding: "1rem",
+            margin: "1rem",
+            borderRadius: "5px",
+            cursor: "pointer",
+          }}>
+          <p>User: {rating.user_email}</p>
           <p>Rating: {rating.rating}</p>
           <p>Comment: {rating.comment}</p>
         </div>
@@ -112,7 +121,7 @@ const BreweryDetails = () => {
         <button type="submit">Submit Rating</button>
       </form>
       {/* Edit rating form */}
-      {ratings.map((rating) => (
+      {/* {ratings.map((rating) => (
         <form key={rating.id} onSubmit={(e) => handleRatingEdit(rating.id, e)}>
           <input
             type="number"
@@ -131,7 +140,7 @@ const BreweryDetails = () => {
           />
           <button type="submit">Edit Rating</button>
         </form>
-      ))}
+      ))} */}
     </div>
   );
 };
