@@ -10,6 +10,10 @@ const BreweryDetails = () => {
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
   const [rating, setRating] = useState(2);
+  const [newRating, setNewRating] = useState("");
+  const [newComment, setNewComment] = useState("");
+  const [editRating, setEditRating] = useState("");
+  const [editComment, setEditComment] = useState("");
 
   useEffect(() => {
     // Fetch brewery details
@@ -90,14 +94,24 @@ const BreweryDetails = () => {
 
       {/* Rating form */}
       <form onSubmit={handleRatingSubmit}>
-        <input type="number" min="1" max="5" step="1" required />
-        <input type="text" required />
+        <input
+          type="number"
+          min="1"
+          max="5"
+          step="1"
+          required
+          onChange={(e) => setNewRating(e.target.value)}
+        />
+        <input
+          type="text"
+          required
+          onChange={(e) => setNewComment(e.target.value)}
+        />
         <button type="submit">Submit Rating</button>
       </form>
-
       {/* Edit rating form */}
       {ratings.map((rating) => (
-        <form key={rating.id} onSubmit={handleRatingEdit}>
+        <form key={rating.id} onSubmit={(e) => handleRatingEdit(rating.id, e)}>
           <input
             type="number"
             min="1"
@@ -105,8 +119,14 @@ const BreweryDetails = () => {
             step="1"
             defaultValue={rating.rating}
             required
+            onChange={(e) => setEditRating(e.target.value)}
           />
-          <input type="text" defaultValue={rating.comment} required />
+          <input
+            type="text"
+            defaultValue={rating.comment}
+            required
+            onChange={(e) => setEditComment(e.target.value)}
+          />
           <button type="submit">Edit Rating</button>
         </form>
       ))}
