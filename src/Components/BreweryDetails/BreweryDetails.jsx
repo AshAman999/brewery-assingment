@@ -30,9 +30,11 @@ const BreweryDetails = () => {
       },
     })
       .then((response) => response.json())
-      // .then((data) => setRatings(data))
-      .then((data) => setRating(data.avgRating))
-      .then((data) => console.log(data));
+      .then((data) => {
+        setRatings(data.ratings);
+        setRating(data.avgRating);
+        console.log(data);
+      });
   }, [id]);
 
   const handleRatingSubmit = (rating, comment) => {
