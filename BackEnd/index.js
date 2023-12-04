@@ -120,10 +120,11 @@ app.get("/brewery/:id", verifyToken, (req, res) => {
 // Post a rating and comment route
 app.post("/rating", verifyToken, (req, res) => {
   const { breweryId, rating, comment } = req.body;
+  const userEmail = req.user.email;
 
   const query =
-    "INSERT INTO ratings (brewery_id, rating, comment) VALUES (?, ?, ?)";
-  db.query(query, [breweryId, rating, comment], (err, result) => {
+    "INSERT INTO ratings (brewery_id, rating, comment, user_email) VALUES (?, ?, ?, ?)";
+  db.query(query, [breweryId, rating, comment, userEmail], (err, result) => {
     if (err) {
       return res.status(500).json({ message: "Error posting rating" });
     }
@@ -136,17 +137,19 @@ app.post("/rating", verifyToken, (req, res) => {
 app.put("/rating/:id", verifyToken, (req, res) => {
   const ratingId = req.params.id;
   const { rating, comment } = req.body;
+  const userEmail = req.user.email;
 
-  const query = "UPDATE ratings SET rating = ?, comment = ? WHERE id = ?";
-  db.query(query, [rating, comment, ratingId], (err, result) => {
+  const query =
+    "UPDATE ratings SET rating = ?, comment = ? WHERE id = ? AND user_email = ?";
+  db.query(query, [rating, comment, ratingId, userEmail], (err, result) => {
     if (err) {
       return res.status(500).json({ message: "Error updating rating" });
     }
 
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "No rating found for this user" });
+    }
+
     res.json({ message: "Rating updated successfully" });
   });
-});
-
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
 });
