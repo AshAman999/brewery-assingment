@@ -4,14 +4,14 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 
 const app = express();
-const port = 3000;
+const port = 4000;
 
 // MySQL connection
 const db = mysql.createConnection({
   host: "localhost",
-  user: "your_username",
-  password: "your_password",
-  database: "your_database",
+  user: "root",
+  password: "",
+  database: "brewry",
 });
 
 db.connect((err) => {
