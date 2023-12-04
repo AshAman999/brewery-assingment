@@ -120,27 +120,6 @@ const BreweryDetails = () => {
         />
         <button type="submit">Submit Rating</button>
       </form>
-      {/* Edit rating form */}
-      {/* {ratings.map((rating) => (
-        <form key={rating.id} onSubmit={(e) => handleRatingEdit(rating.id, e)}>
-          <input
-            type="number"
-            min="1"
-            max="5"
-            step="1"
-            defaultValue={rating.rating}
-            required
-            onChange={(e) => setEditRating(e.target.value)}
-          />
-          <input
-            type="text"
-            defaultValue={rating.comment}
-            required
-            onChange={(e) => setEditComment(e.target.value)}
-          />
-          <button type="submit">Edit Rating</button>
-        </form>
-      ))} */}
     </div>
   );
 };
