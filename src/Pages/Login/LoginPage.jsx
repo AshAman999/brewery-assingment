@@ -10,7 +10,7 @@ const LoginPage = () => {
 
     // Make API call to sign in
     try {
-      const response = await fetch("/signin", {
+      const response = await fetch("http://localhost:4000/signin", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
