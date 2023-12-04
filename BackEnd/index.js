@@ -158,3 +158,7 @@ app.put("/rating/:id", verifyToken, (req, res) => {
     res.json({ message: "Rating updated successfully" });
   });
 });
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
