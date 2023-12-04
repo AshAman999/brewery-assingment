@@ -45,17 +45,29 @@ const verifyToken = (req, res, next) => {
 app.post("/signup", async (req, res) => {
   const { email, password } = req.body;
 
-  // Hash the password
-  const hashedPassword = await bcrypt.hash(password, 10);
-
-  // Insert user into the database
-  const query = "INSERT INTO users (email, password) VALUES (?, ?)";
-  db.query(query, [email, hashedPassword], (err, result) => {
+  // Check if user already exists
+  const checkUserQuery = "SELECT * FROM users WHERE email = ?";
+  db.query(checkUserQuery, [email], async (err, result) => {
     if (err) {
-      return res.status(500).json({ message: "Error creating user" });
+      return res.status(500).json({ message: "Error checking user" });
     }
 
-    res.status(201).json({ message: "User created successfully" });
+    if (result.length > 0) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert user into the database
+    const insertUserQuery = "INSERT INTO users (email, password) VALUES (?, ?)";
+    db.query(insertUserQuery, [email, hashedPassword], (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: "Error creating user" });
+      }
+
+      res.status(201).json({ message: "User created successfully" });
+    });
   });
 });
 
