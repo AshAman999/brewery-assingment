@@ -104,16 +104,21 @@ app.get("/brewery/:id", verifyToken, (req, res) => {
 
   // Query to get average rating and reviews for a brewery
   const query =
-    "SELECT AVG(rating) AS avgRating, COUNT(*) AS reviewCount FROM ratings WHERE brewery_id = ?";
+    "SELECT IFNULL(AVG(rating), 0) AS avgRating, COUNT(*) AS reviewCount, GROUP_CONCAT(rating) AS ratings FROM ratings RIGHT JOIN users ON ratings.user_email = users.email WHERE brewery_id = ? GROUP BY users.email";
+
   db.query(query, [breweryId], (err, result) => {
     if (err) {
-      return res
-        .status(500)
-        .json({ message: "Error fetching brewery rating and reviews" });
+      return res.json({ avgRating: 0, reviewCount: 0, ratings: [] });
     }
 
-    const { avgRating, reviewCount } = result[0];
-    res.json({ avgRating, reviewCount });
+    if (result.length === 0) {
+      // No ratings found, return 0 and an empty list
+      return res.json({ avgRating: 0, reviewCount: 0, ratings: [] });
+    } else {
+      // Ratings found, return avg rating and list of ratings
+      const { avgRating, reviewCount, ratings } = result[0];
+      return res.json({ avgRating, reviewCount, ratings: ratings.split(",") });
+    }
   });
 });
 
