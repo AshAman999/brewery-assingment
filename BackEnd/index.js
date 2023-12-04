@@ -98,26 +98,30 @@ app.post("/signin", (req, res) => {
   });
 });
 
-// Get brewery rating and reviews route
 app.get("/brewery/:id", verifyToken, (req, res) => {
   const breweryId = req.params.id;
 
-  // Query to get average rating and reviews for a brewery
+  // Query to get all details related to every rating for a brewery
   const query =
-    "SELECT IFNULL(AVG(rating), 0) AS avgRating, COUNT(*) AS reviewCount, GROUP_CONCAT(rating) AS ratings FROM ratings RIGHT JOIN users ON ratings.user_email = users.email WHERE brewery_id = ? GROUP BY users.email";
+    "SELECT rating, comment, users.email AS user_email FROM ratings RIGHT JOIN users ON ratings.user_email = users.email WHERE brewery_id = ?";
 
   db.query(query, [breweryId], (err, result) => {
     if (err) {
       return res.json({ avgRating: 0, reviewCount: 0, ratings: [] });
     }
 
+    console.log(result);
     if (result.length === 0) {
       // No ratings found, return 0 and an empty list
       return res.json({ avgRating: 0, reviewCount: 0, ratings: [] });
     } else {
-      // Ratings found, return avg rating and list of ratings
-      const { avgRating, reviewCount, ratings } = result[0];
-      return res.json({ avgRating, reviewCount, ratings: ratings.split(",") });
+      // Return all details related to every rating
+      return res.json({
+        avgRating:
+          result.reduce((acc, curr) => acc + curr.rating, 0) / result.length,
+        reviewCount: result.length,
+        ratings: result,
+      });
     }
   });
 });
