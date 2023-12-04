@@ -20,7 +20,8 @@ const BreweryDetails = () => {
     // Fetch ratings
     fetch("/api/ratings")
       .then((response) => response.json())
-      .then((data) => setRatings(data));
+      .then((data) => setRatings(data))
+      .then((data) => console.log(data));
   }, [id]);
 
   const handleRatingSubmit = (rating, comment) => {
