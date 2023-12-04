@@ -23,6 +23,7 @@ const LoginPage = () => {
 
         // Store the token in localStorage
         localStorage.setItem("token", data.token);
+        localStorage.setItem("email", email);
 
         // You can redirect to another page or perform other actions after successful login
         console.log("Login successful!");
