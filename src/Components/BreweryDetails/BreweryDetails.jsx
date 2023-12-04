@@ -40,7 +40,9 @@ const BreweryDetails = () => {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
       },
-    }).then((response) => response.json());
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data));
     // .then((data) => {
     //   // Refetch ratings
     //   fetch("/api/ratings")

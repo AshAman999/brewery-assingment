@@ -19,7 +19,7 @@ const BreweryCard = ({ id, name, adress, phone, website, state, city }) => {
   }, [id]);
 
   const handleClick = () => {
-    navigate(`/brewerysearch?id=${id}&rating=${rating}`);
+    navigate(`/brewerysearch?id=${id}`);
   };
   return (
     <div
