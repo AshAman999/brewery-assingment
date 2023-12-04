@@ -18,9 +18,17 @@ function App() {
             </Protected>
           }
         />
+
+        <Route
+          path="/brewerysearch"
+          element={
+            <Protected>
+              <BreweryDetails />
+            </Protected>
+          }
+        />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        <Route path="/brewerysearch" element={<BreweryDetails />} />
       </Routes>
     </Router>
   );
