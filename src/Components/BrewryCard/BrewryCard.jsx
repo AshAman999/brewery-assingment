@@ -23,14 +23,15 @@ const BreweryCard = ({ id, name, adress, phone, website, state, city }) => {
   };
   return (
     <div
-      className="brewery-card"
+      className="brewery-card col-lg-3 m-4 "
+
       onClick={handleClick}
       style={{
-        border: "1px solid black",
         padding: "1rem",
         margin: "1rem",
         borderRadius: "5px",
         cursor: "pointer",
+        boxShadow : "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
       }}>
       <h3>{name}</h3>
       <p>{phone}</p>

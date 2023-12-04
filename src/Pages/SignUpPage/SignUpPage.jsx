@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Form, Button } from "react-bootstrap";
-
+import '../Login/login.css'
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -40,13 +40,13 @@ const SignUpPage = () => {
 
   return (
     <Container
-      className="d-flex justify-content-center align-items-center"
+      className=" container-height"
       style={{ maxWidth: "60%" }}>
       <Row>
         <Col>
-          <h1>Sign Up</h1>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formBasicEmail">
+          <h1 className="text-center mb-3">Sign Up</h1>
+          <Form onSubmit={handleSubmit} className="form_border p-5">
+            <Form.Group controlId="formBasicEmail" className="pb-3">
               <Form.Label>Email address</Form.Label>
               <Form.Control
                 type="email"
@@ -56,7 +56,7 @@ const SignUpPage = () => {
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicPassword">
+            <Form.Group controlId="formBasicPassword" className="pb-3">
               <Form.Label>Password</Form.Label>
               <Form.Control
                 type="password"
@@ -66,7 +66,7 @@ const SignUpPage = () => {
               />
             </Form.Group>
 
-            <Form.Group controlId="formBasicConfirmPassword">
+            <Form.Group controlId="formBasicConfirmPassword" className="pb-3">
               <Form.Label>Confirm Password</Form.Label>
               <Form.Control
                 type="password"

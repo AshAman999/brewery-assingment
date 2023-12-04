@@ -82,9 +82,10 @@ const BrewerySearch = () => {
       ) : (
         <div>
           {breweries.length > 0 ? (
-            <div>
+            <div className="row justify-content-center">
               {breweries.map((brewery) => (
                 <BreweryCard
+                  key = {brewery.id}
                   id={brewery.id}
                   name={brewery.name}
                   phone={brewery.phone}

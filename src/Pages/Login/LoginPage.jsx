@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { Container, Form, Button, Row, Col } from "react-bootstrap";
+import "./login.css"
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
@@ -38,34 +39,37 @@ const LoginPage = () => {
 
   return (
     <Container
-      className="justify-content-center align-items-center"
+      className=" container-height"
       style={{ maxWidth: "60%" }}>
-      <h1>Login</h1>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
+     
+      <Row>
+        <h1 className="text-center pb-3">Login</h1>
+        <Form onSubmit={handleSubmit} className="form_border p-5"> 
+          <Form.Group controlId="formBasicEmail" className="pb-2">
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </Form.Group>
+          <Form.Group controlId="formBasicPassword" className="pb-3">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Submit
-        </Button>
-      </Form>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      </Row>
     </Container>
   );
 };
