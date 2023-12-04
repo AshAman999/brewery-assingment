@@ -1,16 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import isAuthenticated from "./isAuthenticated";
 
 const Protected = ({ children }) => {
   const navigate = useNavigate();
 
-  if (!isAuthenticated()) {
-    navigate("/login");
-    return null;
-  }
+  useEffect(() => {
+    // Asynchronously check if the user is authenticated
+    async function check() {
+      if (!isAuthenticated()) {
+        navigate("/login");
+      }
+    }
+    check();
+  }, [navigate]);
 
-  return <>{children}</>;
+  return children;
 };
 
 export default Protected;
