@@ -1,10 +1,11 @@
-import "./App.css";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginPage from "./Pages/Login/LoginPage";
-import SignUpPage from "./Pages/SignUpPage/SignUpPage";
+import "./App.css";
 import BrewerySearch from "./Pages/Home/Home";
 import BreweryDetails from "./Components/BreweryDetails/BreweryDetails";
 import Protected from "./Utils/Protected";
+import LoginPage from "./Pages/Login/LoginPage";
+import SignUpPage from "./Pages/SignUpPage/SignUpPage";
 
 function App() {
   return (
@@ -18,7 +19,6 @@ function App() {
             </Protected>
           }
         />
-
         <Route
           path="/brewerysearch"
           element={

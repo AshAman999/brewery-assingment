@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Alert } from "react-bootstrap";
 import "../Login/login.css";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +8,8 @@ const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -15,7 +17,8 @@ const SignUpPage = () => {
 
     // Validate password and confirm password
     if (password !== confirmPassword) {
-      console.error("Passwords do not match");
+      setError("Passwords do not match");
+      setShowAlert(true);
       return;
     }
 
@@ -34,11 +37,14 @@ const SignUpPage = () => {
         console.log("Sign-up successful!");
         navigate("/login");
       } else {
-        console.error("Sign-up failed");
+        console.log(response);
+        setError(`Error during sign-up: ${response.json}`);
+        setShowAlert(true);
         // Handle unsuccessful sign-up, show an error message, etc.
       }
     } catch (error) {
-      console.error("Error during sign-up:", error.message);
+      setError(`Error during sign-up: ${error.message}`);
+      setShowAlert(true);
     }
   };
 
@@ -47,6 +53,14 @@ const SignUpPage = () => {
       <Row>
         <Col>
           <h1 className="text-center mb-3">Sign Up</h1>
+          {showAlert && (
+            <Alert
+              variant="danger"
+              onClose={() => setShowAlert(false)}
+              dismissible>
+              {error}
+            </Alert>
+          )}
           <Form onSubmit={handleSubmit} className="form_border p-5">
             <Form.Group controlId="formBasicEmail" className="pb-3">
               <Form.Label>Email address</Form.Label>

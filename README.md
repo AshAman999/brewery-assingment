@@ -1,70 +1,133 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Brewery Backend Documentation
 
-## Available Scripts
+This documentation provides an overview of the backend code for the Brewery application.
 
-In the project directory, you can run:
+## Technologies Used
 
-### `npm start`
+- Node.js
+- Express.js
+- MySQL
+- JWT (JSON Web Tokens)
+- Bcrypt
+- Cors
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+To run the backend server, follow these steps:
 
-### `npm test`
+1. Clone the repository.
+2. Install the required dependencies using the command `npm install`.
+3. Set up the MySQL database and update the connection details in the code.
+4. Start the server using the command `npm start`.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## API Endpoints
 
-### `npm run build`
+### Sign Up
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- Endpoint: `/signup`
+- Method: `POST`
+- Description: Creates a new user account.
+- Request Body:
+  - `email` (string): User's email address.
+  - `password` (string): User's password.
+- Response:
+  - Success (Status 201):
+    - `message` (string): "User created successfully".
+  - Error (Status 400/500):
+    - `message` (string): Error message.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Sign In
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- Endpoint: `/signin`
+- Method: `POST`
+- Description: Authenticates a user and returns a JWT token.
+- Request Body:
+  - `email` (string): User's email address.
+  - `password` (string): User's password.
+- Response:
+  - Success (Status 200):
+    - `token` (string): JWT token.
+  - Error (Status 401/500):
+    - `message` (string): Error message.
 
-### `npm run eject`
+### Get Brewery Ratings
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- Endpoint: `/brewery/:id`
+- Method: `GET`
+- Description: Retrieves the average rating, review count, and all ratings for a brewery.
+- Request Parameters:
+  - `id` (string): Brewery ID.
+- Request Headers:
+  - `Authorization` (string): JWT token.
+- Response:
+  - Success (Status 200):
+    - `avgRating` (number): Average rating for the brewery.
+    - `reviewCount` (number): Total number of reviews for the brewery.
+    - `ratings` (array): Array of objects containing rating, comment, and user email for each review.
+  - Error (Status 403/500):
+    - `message` (string): Error message.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Post Brewery Rating
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Endpoint: `/rating`
+- Method: `POST`
+- Description: Posts a new rating and comment for a brewery.
+- Request Body:
+  - `breweryId` (string): Brewery ID.
+  - `rating` (number): Rating value (1-5).
+  - `comment` (string): Review comment.
+- Request Headers:
+  - `Authorization` (string): JWT token.
+- Response:
+  - Success (Status 201):
+    - `message` (string): "Rating posted successfully".
+  - Error (Status 400/500):
+    - `message` (string): Error message.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Update Brewery Rating
 
-## Learn More
+- Endpoint: `/rating/:id`
+- Method: `PUT`
+- Description: Updates an existing rating and comment for a brewery.
+- Request Parameters:
+  - `id` (string): Rating ID.
+- Request Body:
+  - `rating` (number): Updated rating value (1-5).
+  - `comment` (string): Updated review comment.
+- Request Headers:
+  - `Authorization` (string): JWT token.
+- Response:
+  - Success (Status 200):
+    - `message` (string): "Rating updated successfully".
+  - Error (Status 404/500):
+    - `message` (string): Error message.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# React Frontend
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The frontend code for the Brewery application is developed separately and integrated with this backend. Documentation for the frontend will be provided in a separate file.
 
-### Code Splitting
+### Login/Signup Page
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Route: `/login`
+- Route: `/signup`
 
-### Analyzing the Bundle Size
+This page should provide options for users to log in or sign up for a new account.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Search Page
 
-### Making a Progressive Web App
+- Route: `/`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+This page should allow users to search for breweries by city, name, or type. The search results should display the following details per brewery:
+- Brewery name
+- Brewery address
+- Phone number
+- Website URL
+- Current rating (based on point 4)
+- State and city
 
-### Advanced Configuration
+### Brewery Page
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+- Route: `/brewery/:id`
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This page should display all the information about a specific brewery, including existing reviews pulled from the hosted database. Users should also have the ability to add a review for the brewery. The review should include a rating from 1-5 and a description.

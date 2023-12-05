@@ -11,7 +11,6 @@ const LoginPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Make API call to sign in
     try {
       const response = await fetch("http://localhost:4000/signin", {
         method: "POST",
@@ -24,21 +23,23 @@ const LoginPage = () => {
       if (response.ok) {
         const data = await response.json();
 
-        // Store the token in localStorage
         localStorage.setItem("token", data.token);
         localStorage.setItem("email", email);
 
-        // You can redirect to another page or perform other actions after successful login
         console.log("Login successful!");
         navigate("/");
-        // Redirect to home page
       } else {
         console.error("Login failed");
-        // Handle unsuccessful login, show an error message, etc.
+        alert("Invalid email or password"); // Show an error message
       }
     } catch (error) {
       console.error("Error during login:", error.message);
+      alert("An error occurred during login"); // Show an error message
     }
+  };
+
+  const handleRegister = () => {
+    navigate("/signup");
   };
 
   return (
@@ -70,6 +71,14 @@ const LoginPage = () => {
             Submit
           </Button>
         </Form>
+      </Row>
+      <Row className="mt-3">
+        <Col className="text-center">
+          <p>Not yet registered? Click here to register.</p>
+          <Button variant="link" onClick={handleRegister}>
+            Register
+          </Button>
+        </Col>
       </Row>
     </Container>
   );
