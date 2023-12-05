@@ -9,7 +9,7 @@ const BreweryDetails = () => {
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
 
-  const [rating, setRating] = useState(2);
+  const [rating, setRating] = useState(0);
   const [newRating, setNewRating] = useState("");
   const [newComment, setNewComment] = useState("");
   const [editRating, setEditRating] = useState("");
@@ -107,40 +107,58 @@ const BreweryDetails = () => {
 
   return (
     <div>
-      <h3>{brewery.name}</h3>
-      <p>{brewery.adress}</p>
-      <p>{brewery.phone}</p>
-      <a href={brewery.website}>{brewery.website}</a>
-      <p>Rating: {rating}</p>
-      <p>
-        {brewery.state}, {brewery.city}
-      </p>
 
+      <div className="d-flex justify-content-between ps-5 pe-5 pt-3 pb-3 mb-3"
+      style={{
+        boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+      }}
+      >
+        <div >
+          <h3>{brewery.name}</h3>
+          <p>{brewery.adress}</p>
+          <p>{brewery.phone}</p>
+        </div>
+        
+        <div>
+          <a href={brewery.website}>{brewery.website}</a>
+          <p>Rating: {rating}</p>
+          <p>
+            {brewery.state}, {brewery.city}
+          </p>
+        </div>
+      </div>
+      
+      
+      
+
+      <div className="d-flex flex-column align-items-center">
       {ratings
         .sort((a, b) =>
           a.user_email === localStorage.getItem("email") ? -1 : 1
         )
         .map((rating, index) => (
           <div
+            className="col-md-6 offset-md-3 "
             key={index}
             style={{
-              border: "1px solid black",
               padding: "1rem",
               margin: "1rem",
               borderRadius: "5px",
               cursor: "pointer",
+              boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
             }}>
             <p>
-              User:
+              User: 
               {rating.user_email === localStorage.getItem("email")
-                ? "You"
+                ? " You"
                 : rating.user_email}
             </p>
 
             {editModeList[index] ? (
               <div>
-                <label>Rating:</label>
+                <label className="mb-2">Rating:</label>
                 <input
+                  className="form-control"
                   type="number"
                   min="1"
                   max="5"
@@ -149,15 +167,17 @@ const BreweryDetails = () => {
                   onChange={(e) => setEditRating(e.target.value)}
                 />
                 <br />
-                <label>Comment:</label>
+                <label className="mb-2">Comment:</label>
                 <input
+                  className="form-control"
                   type="text"
                   value={editComment}
                   onChange={(e) => setEditComment(e.target.value)}
                 />
                 <br />
-                <button onClick={() => handleRatingEdit(index)}>Save</button>
+                <button className="btn btn-primary me-2" onClick={() => handleRatingEdit(index)}>Save</button>
                 <button
+                  className="btn btn-primary me-2"
                   onClick={() =>
                     setEditModeList((prev) => ({ ...prev, [index]: false }))
                   }>
@@ -169,15 +189,25 @@ const BreweryDetails = () => {
                 <p>Rating: {rating.rating}</p>
                 <p>Comment: {rating.comment}</p>
                 {rating.user_email === localStorage.getItem("email") && (
-                  <button onClick={() => enableEditMode(index)}>Edit</button>
+                  <button className="btn btn-primary me-2" onClick={() => enableEditMode(index)}>Edit</button>
                 )}
               </div>
             )}
           </div>
         ))}
       {!alreadyRated && (
-        <form onSubmit={handleRatingSubmit}>
+
+        <form onSubmit={handleRatingSubmit}
+        style={{
+          boxShadow: "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+        }}
+        className="p-5 col-md-6 mt-5"
+        >
+          <h1 className="text-center">Submit your review</h1>
+          <label htmlFor="inputRating" className="mb-1">Rating</label>
           <input
+            id="inputRating"
+            className="form-control mb-3"
             type="number"
             min="1"
             max="5"
@@ -185,14 +215,18 @@ const BreweryDetails = () => {
             required
             onChange={(e) => setNewRating(e.target.value)}
           />
+          <label htmlFor="inputComment" className="mb-1">Comment</label>
           <input
+            id="inputComment"
+            className="form-control mb-3"
             type="text"
             required
             onChange={(e) => setNewComment(e.target.value)}
           />
-          <button type="submit">Submit Rating</button>
+          <button className="btn btn-primary me-2" type="submit">Submit Rating</button>
         </form>
       )}
+      </div>
     </div>
   );
 };
