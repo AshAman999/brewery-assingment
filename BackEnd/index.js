@@ -94,7 +94,9 @@ app.post("/signin", (req, res) => {
     }
 
     // Create and return JWT token
-    const token = jwt.sign({ email }, "your_secret_key", { expiresIn: "24h" });
+    const token = jwt.sign({ email }, process.env.SECRET_KEY, {
+      expiresIn: "24h",
+    });
     res.json({ token });
   });
 });
