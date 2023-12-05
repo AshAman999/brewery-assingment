@@ -160,14 +160,14 @@ app.post("/rating", verifyToken, (req, res) => {
 });
 
 // Edit a rating and comment route
-app.put("/rating/:id", verifyToken, (req, res) => {
+app.put("/rating/", verifyToken, (req, res) => {
   const ratingId = req.params.id;
   const { rating, comment } = req.body;
   const userEmail = req.user.email;
 
   const query =
-    "UPDATE ratings SET rating = ?, comment = ? WHERE id = ? AND user_email = ?";
-  db.query(query, [rating, comment, ratingId, userEmail], (err, result) => {
+    "UPDATE ratings SET rating = ?, comment = ? where user_email = ?";
+  db.query(query, [rating, comment, userEmail], (err, result) => {
     if (err) {
       return res.status(500).json({ message: "Error updating rating" });
     }
