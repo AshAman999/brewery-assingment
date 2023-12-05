@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Form, Button } from "react-bootstrap";
-import '../Login/login.css'
+import "../Login/login.css";
+import { useNavigate } from "react-router-dom";
+
 const SignUpPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +32,7 @@ const SignUpPage = () => {
       if (response.ok) {
         // You can redirect to another page or perform other actions after successful sign-up
         console.log("Sign-up successful!");
+        navigate("/login");
       } else {
         console.error("Sign-up failed");
         // Handle unsuccessful sign-up, show an error message, etc.
@@ -39,9 +43,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <Container
-      className=" container-height"
-      style={{ maxWidth: "60%" }}>
+    <Container className=" container-height" style={{ maxWidth: "60%" }}>
       <Row>
         <Col>
           <h1 className="text-center mb-3">Sign Up</h1>
