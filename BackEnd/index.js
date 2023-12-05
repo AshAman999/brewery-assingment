@@ -126,19 +126,36 @@ app.get("/brewery/:id", verifyToken, (req, res) => {
   });
 });
 
-// Post a rating and comment route
 app.post("/rating", verifyToken, (req, res) => {
   const { breweryId, rating, comment } = req.body;
   const userEmail = req.user.email;
 
-  const query =
-    "INSERT INTO ratings (brewery_id, rating, comment, user_email) VALUES (?, ?, ?, ?)";
-  db.query(query, [breweryId, rating, comment, userEmail], (err, result) => {
+  const checkQuery =
+    "SELECT * FROM ratings WHERE brewery_id = ? AND user_email = ?";
+  db.query(checkQuery, [breweryId, userEmail], (err, result) => {
     if (err) {
-      return res.status(500).json({ message: "Error posting rating" });
+      return res.status(500).json({ message: "Error checking rating" });
     }
 
-    res.status(201).json({ message: "Rating posted successfully" });
+    if (result.length > 0) {
+      return res
+        .status(400)
+        .json({ message: "You have already rated this brewery" });
+    }
+
+    const insertQuery =
+      "INSERT INTO ratings (brewery_id, rating, comment, user_email) VALUES (?, ?, ?, ?)";
+    db.query(
+      insertQuery,
+      [breweryId, rating, comment, userEmail],
+      (err, result) => {
+        if (err) {
+          return res.status(500).json({ message: "Error posting rating" });
+        }
+
+        res.status(201).json({ message: "Rating posted successfully" });
+      }
+    );
   });
 });
 

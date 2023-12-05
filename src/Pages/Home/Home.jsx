@@ -85,7 +85,7 @@ const BrewerySearch = () => {
             <div className="row justify-content-center">
               {breweries.map((brewery) => (
                 <BreweryCard
-                  key = {brewery.id}
+                  key={brewery.id}
                   id={brewery.id}
                   name={brewery.name}
                   phone={brewery.phone}
@@ -101,12 +101,12 @@ const BrewerySearch = () => {
         </div>
       )}
 
-      <button disabled={page === 1} onClick={() => setPage(page - 1)}>
+      {/* <button disabled={page === 1} onClick={() => setPage(page - 1)}>
         Previous
       </button>
       <button disabled={page === totalPages} onClick={() => setPage(page + 1)}>
         Next
-      </button>
+      </button> */}
     </div>
   );
 };

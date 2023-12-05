@@ -37,24 +37,37 @@ const BreweryDetails = () => {
       });
   }, [id]);
 
-  const handleRatingSubmit = (rating, comment) => {
+  const handleRatingSubmit = (event) => {
+    event.preventDefault();
+
     // Submit rating
-    fetch(`http://localhost:4000/rating}`, {
+    fetch(`http://localhost:4000/rating`, {
       method: "POST",
-      body: JSON.stringify({ breweryId: id, rating, comment }),
+      body: JSON.stringify({
+        breweryId: id,
+        rating: newRating,
+        comment: newComment,
+      }),
       headers: {
         "Content-Type": "application/json",
         Authorization: localStorage.getItem("token"),
       },
     })
       .then((response) => response.json())
-      .then((data) => console.log(data));
-    // .then((data) => {
-    //   // Refetch ratings
-    //   fetch("/api/ratings")
-    //     .then((response) => response.json())
-    //     .then((data) => setRatings(data));
-    // });
+      .then((data) => console.log(data))
+      .then(async () => {
+        const response = await fetch(`http://localhost:4000/brewery/${id}`, {
+          // pass authentication headers
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: localStorage.getItem("token"),
+          },
+        });
+        const data = await response.json();
+        setRatings(data.ratings);
+        setRating(data.avgRating);
+        console.log(data);
+      });
   };
 
   const handleRatingEdit = (ratingId, newRating, newComment) => {
@@ -85,7 +98,6 @@ const BreweryDetails = () => {
       <p>
         {brewery.state}, {brewery.city}
       </p>
-
       {/* Display ratings */}
       {ratings.map((rating) => (
         <div
@@ -102,8 +114,8 @@ const BreweryDetails = () => {
           <p>Comment: {rating.comment}</p>
         </div>
       ))}
-
       {/* Rating form */}
+      // Rating form
       <form onSubmit={handleRatingSubmit}>
         <input
           type="number"

@@ -6,15 +6,16 @@ const BreweryCard = ({ id, name, adress, phone, website, state, city }) => {
   const [rating, setRating] = useState(0);
 
   useEffect(() => {
-    // Replace 'your-api-url' with the actual API URL
-    fetch(`your-api-url/${id}`)
+    fetch(`http://localhost:4000/brewery/${id}`, {
+      // pass authentication headers
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: localStorage.getItem("token"),
+      },
+    })
       .then((response) => response.json())
       .then((data) => {
-        setRating(data.rating || 0);
-      })
-      .catch((error) => {
-        console.error("Error fetching rating:", error);
-        setRating(0);
+        setRating(data.avgRating);
       });
   }, [id]);
 
@@ -24,14 +25,14 @@ const BreweryCard = ({ id, name, adress, phone, website, state, city }) => {
   return (
     <div
       className="brewery-card col-lg-3 m-4 "
-
       onClick={handleClick}
       style={{
         padding: "1rem",
         margin: "1rem",
         borderRadius: "5px",
         cursor: "pointer",
-        boxShadow : "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
+        boxShadow:
+          "rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px",
       }}>
       <h3>{name}</h3>
       <p>{phone}</p>
