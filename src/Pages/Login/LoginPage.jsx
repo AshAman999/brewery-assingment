@@ -10,9 +10,8 @@ const LoginPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      const response = await fetch("http://localhost:4000/signin", {
+      const response = await fetch(`/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

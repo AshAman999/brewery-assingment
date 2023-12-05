@@ -48,7 +48,7 @@ const BreweryDetails = () => {
     );
     setBrewery(data);
 
-    const data2 = await fetchData(`http://localhost:4000/brewery/${id}`);
+    const data2 = await fetchData(`/brewery/${id}`);
     updateRatingsAndEditModeList(data2);
   };
 
@@ -59,7 +59,7 @@ const BreweryDetails = () => {
   const handleRatingSubmit = async (event) => {
     event.preventDefault();
 
-    await fetchData(`http://localhost:4000/rating`, {
+    await fetchData(`/rating`, {
       method: "POST",
       body: JSON.stringify({
         breweryId: id,
@@ -68,12 +68,12 @@ const BreweryDetails = () => {
       }),
     });
 
-    const data = await fetchData(`http://localhost:4000/brewery/${id}`);
+    const data = await fetchData(`/brewery/${id}`);
     updateRatingsAndEditModeList(data);
   };
 
   const handleRatingEdit = async (index) => {
-    const data = await fetchData(`http://localhost:4000/rating`, {
+    const data = await fetchData(`/rating`, {
       method: "PUT",
       body: JSON.stringify({ rating: editRating, comment: editComment }),
     });

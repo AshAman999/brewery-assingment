@@ -6,7 +6,7 @@ const BreweryCard = ({ id, name, adress, phone, website, state, city }) => {
   const [rating, setRating] = useState(0);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/brewery/${id}`, {
+    fetch(`/brewery/${id}`, {
       // pass authentication headers
       headers: {
         "Content-Type": "application/json",
