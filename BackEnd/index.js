@@ -3,17 +3,18 @@ const mysql = require("mysql");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const cors = require("cors"); // Add this line
+require("dotenv").config();
 
 const app = express();
-app.use(cors()); // And this line
-const port = 4000;
+app.use(cors());
+const port = process.env.PORT || 4000;
 
 // MySQL connection
 const db = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "brewry",
+  host: process.env.HOST,
+  user: process.env.USER,
+  password: process.env.PASSWORD,
+  database: process.env.DATABASE,
 });
 
 db.connect((err) => {
@@ -32,7 +33,7 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  jwt.verify(token, "your_secret_key", (err, user) => {
+  jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
     if (err) {
       return res.status(403).json({ message: "Invalid token" });
     }
