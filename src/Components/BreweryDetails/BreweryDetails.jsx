@@ -18,7 +18,7 @@ const BreweryDetails = () => {
   const [editModeList, setEditModeList] = useState([]);
   const [alreadyRated, setAlreadyRated] = useState(false);
 
-  useEffect(() => {
+  const getDetails = async () => {
     fetch(`https://api.openbrewerydb.org/v1/breweries/${id}`)
       .then((response) => response.json())
       .then((data) => setBrewery(data));
@@ -42,7 +42,11 @@ const BreweryDetails = () => {
         // Initialize edit mode list
         setEditModeList(data.ratings.map(() => false));
       });
-  }, [id]);
+  };
+
+  useEffect(() => {
+    getDetails();
+  }, [id, getDetails]);
 
   const handleRatingSubmit = (event) => {
     event.preventDefault();
@@ -104,6 +108,7 @@ const BreweryDetails = () => {
           const updatedEditModeList = [...editModeList];
           updatedEditModeList[index] = false;
           setEditModeList(updatedEditModeList);
+          getDetails();
         } else {
           // Handle error message from server
           console.error(data.message);
