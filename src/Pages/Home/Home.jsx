@@ -3,7 +3,7 @@ import BreweryCard from "../../Components/BrewryCard/BrewryCard";
 
 const BrewerySearch = () => {
   const [searchInput, setSearchInput] = useState("");
-  const [searchType, setSearchType] = useState("by_city"); // Default search type is by city
+  const [searchType, setSearchType] = useState("by_name"); // Default search type is by city
   const [breweries, setBreweries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1); // New state for current page
@@ -44,38 +44,51 @@ const BrewerySearch = () => {
   }, [page]); // Add page to dependency array
 
   return (
-    <div className="container">
-      <h1>Brewery Search App</h1>
+    <div className="">
       <div>
-        <label htmlFor="searchInput">Search:</label>
-        {searchType === "by_type" ? (
-          <select
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}>
-            <option value="">Select Brewery Type</option>
-            {breweryTypes.map((type) => (
-              <option key={type} value={type}>
-                {type}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <input
-            type="text"
-            id="searchInput"
-            placeholder={`Enter ${searchType.replace("_", " ")}`}
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-          />
-        )}
-        <select
-          value={searchType}
-          onChange={(e) => setSearchType(e.target.value)}>
-          <option value="by_city">By City</option>
-          <option value="by_name">By Name</option>
-          <option value="by_type">By Type</option>
-        </select>
-        <button onClick={searchBreweries}>Search</button>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary px-5">
+          <div class="container-fluid ">
+            <h1 className="navbar-brand">Brewery Search App</h1>
+            <div className="d-flex">
+              {searchType === "by_type" ? (
+                <select
+                  className="form-select  me-2"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}>
+                  <option value="">Select Brewery Type</option>
+                  {breweryTypes.map((type) => (
+                    <option key={type} value={type}>
+                      {type}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  type="text"
+                  id="searchInput"
+                  placeholder={`Enter ${searchType.replace("_", " ")}`}
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  className="form-control me-2"
+                  aria-label="Search"
+                />
+              )}
+              <select
+                className="form-select  me-2"
+                value={searchType}
+                onChange={(e) => setSearchType(e.target.value)}>
+                <option value="by_city">By City</option>
+                <option value="by_name">By Name</option>
+                <option value="by_type">By Type</option>
+              </select>
+              <button
+                className="btn btn-outline-success"
+                onClick={searchBreweries}>
+                Search
+              </button>
+            </div>
+          </div>
+        </nav>
       </div>
       {loading ? (
         <p>Loading...</p>
