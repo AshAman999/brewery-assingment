@@ -87,6 +87,14 @@ const BrewerySearch = () => {
                 Search
               </button>
             </div>
+            <button
+              className="btn btn-outline-danger"
+              onClick={() => {
+                localStorage.removeItem("token");
+                window.location.reload();
+              }}>
+              Logout
+            </button>
           </div>
         </nav>
       </div>
