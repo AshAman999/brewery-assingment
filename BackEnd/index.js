@@ -19,13 +19,18 @@ const db = mysql.createConnection({
 
 db.connect((err) => {
   if (err) {
-    throw err;
+    // throw err;
+    console.log("Error connecting to db, check your conenction");
   }
   console.log("Connected to MySQL");
 });
 
 app.use(express.json());
 
+// ping route
+app.get("/", (req, res) => {
+  res.send("Ping pong , I am working");
+});
 // Middleware to verify JWT token
 const verifyToken = (req, res, next) => {
   const token = req.header("Authorization");
