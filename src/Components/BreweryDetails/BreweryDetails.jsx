@@ -73,7 +73,7 @@ const BreweryDetails = () => {
   };
 
   const handleRatingEdit = async (index) => {
-    const data = await fetchData(`/rating`, {
+    const data = await fetchData(`/rating/${id}`, {
       method: "PUT",
       body: JSON.stringify({ rating: editRating, comment: editComment }),
     });
