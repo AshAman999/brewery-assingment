@@ -1,6 +1,6 @@
 import express, { json } from "express";
 import { createConnection } from "mysql";
-import pkg from 'jsonwebtoken';
+import pkg from "jsonwebtoken";
 const { verify, sign } = pkg;
 import { hash, compare } from "bcrypt";
 import cors from "cors"; // Add this line
@@ -41,7 +41,7 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  verify(token, process.env.SECRET_KEY, (err, user) => {
+  verify(token, "NotSoSecretKeyIsit", (err, user) => {
     if (err) {
       return res.status(403).json({ message: "Invalid token" });
     }
@@ -102,7 +102,7 @@ app.post("/signin", (req, res) => {
     }
 
     // Create and return JWT token
-    const token = sign({ email }, process.env.SECRET_KEY, {
+    const token = sign({ email }, "NotSoSecretKeyIsit", {
       expiresIn: "24h",
     });
     res.json({ token });
@@ -126,10 +126,14 @@ app.get("/brewery/:id", verifyToken, (req, res) => {
       // No ratings found, return 0 and an empty list
       return res.json({ avgRating: 0, reviewCount: 0, ratings: [] });
     } else {
+      // Calculate average rating with one decimal place
+      const avgRating = (
+        result.reduce((acc, curr) => acc + curr.rating, 0) / result.length
+      ).toFixed(1);
+
       // Return all details related to every rating
       return res.json({
-        avgRating:
-          result.reduce((acc, curr) => acc + curr.rating, 0) / result.length,
+        avgRating: parseFloat(avgRating),
         reviewCount: result.length,
         ratings: result,
       });
@@ -184,7 +188,9 @@ app.put("/rating/:breweryId", verifyToken, (req, res) => {
     }
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "No rating found for this user and brewery" });
+      return res
+        .status(404)
+        .json({ message: "No rating found for this user and brewery" });
     }
 
     res.json({ message: "Rating updated successfully" });

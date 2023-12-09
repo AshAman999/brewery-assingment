@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Form, Button, Row, Col } from "react-bootstrap";
 import "./login.css";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,6 +42,12 @@ const LoginPage = () => {
     navigate("/signup");
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+    //eslint-disable-next-line
+  }, []);
   return (
     <Container className=" container-height" style={{ maxWidth: "60%" }}>
       <Row>

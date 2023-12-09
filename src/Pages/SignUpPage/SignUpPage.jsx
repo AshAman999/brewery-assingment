@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { Form, Button, Alert } from "react-bootstrap";
 import "../Login/login.css";
@@ -48,6 +48,12 @@ const SignUpPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+    //eslint-disable-next-line
+  }, []);
   return (
     <Container className=" container-height" style={{ maxWidth: "60%" }}>
       <Row>
