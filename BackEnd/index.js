@@ -1,20 +1,23 @@
-const express = require("express");
-const mysql = require("mysql");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const cors = require("cors"); // Add this line
-require("dotenv").config();
+import express, { json } from "express";
+import { createConnection } from "mysql";
+import pkg from 'jsonwebtoken';
+const { verify, sign } = pkg;
+import { hash, compare } from "bcrypt";
+import cors from "cors"; // Add this line
 
 const app = express();
 app.use(cors());
 const port = process.env.PORT || 4000;
 
 // MySQL connection
-const db = mysql.createConnection({
-  host: process.env.HOST,
-  user: process.env.USER,
-  password: process.env.PASSWORD,
-  database: process.env.DATABASE,
+const db = createConnection({
+  // host: process.env.HOST,
+  // user: process.env.USER,
+  // password: process.env.PASSWORD,
+  // database: process.env.DATABASE,
+  user: "root",
+  password: "",
+  database: "brewry",
 });
 
 db.connect((err) => {
@@ -25,7 +28,7 @@ db.connect((err) => {
   console.log("Connected to MySQL");
 });
 
-app.use(express.json());
+app.use(json());
 
 // ping route
 app.get("/", (req, res) => {
@@ -38,7 +41,7 @@ const verifyToken = (req, res, next) => {
     return res.status(401).json({ message: "Unauthorized" });
   }
 
-  jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
+  verify(token, process.env.SECRET_KEY, (err, user) => {
     if (err) {
       return res.status(403).json({ message: "Invalid token" });
     }
@@ -63,7 +66,7 @@ app.post("/signup", async (req, res) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await hash(password, 10);
 
     // Insert user into the database
     const insertUserQuery = "INSERT INTO users (email, password) VALUES (?, ?)";
@@ -93,13 +96,13 @@ app.post("/signin", (req, res) => {
     }
 
     // Check password
-    const match = await bcrypt.compare(password, result[0].password);
+    const match = await compare(password, result[0].password);
     if (!match) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
     // Create and return JWT token
-    const token = jwt.sign({ email }, process.env.SECRET_KEY, {
+    const token = sign({ email }, process.env.SECRET_KEY, {
       expiresIn: "24h",
     });
     res.json({ token });
