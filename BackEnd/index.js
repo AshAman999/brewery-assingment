@@ -168,20 +168,20 @@ app.post("/rating", verifyToken, (req, res) => {
 });
 
 // Edit a rating and comment route
-app.put("/rating/", verifyToken, (req, res) => {
-  const ratingId = req.params.id;
+app.put("/rating/:breweryId", verifyToken, (req, res) => {
+  const breweryId = req.params.breweryId;
   const { rating, comment } = req.body;
   const userEmail = req.user.email;
 
   const query =
-    "UPDATE ratings SET rating = ?, comment = ? where user_email = ?";
-  db.query(query, [rating, comment, userEmail], (err, result) => {
+    "UPDATE ratings SET rating = ?, comment = ? WHERE brewery_id = ? AND user_email = ?";
+  db.query(query, [rating, comment, breweryId, userEmail], (err, result) => {
     if (err) {
       return res.status(500).json({ message: "Error updating rating" });
     }
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ message: "No rating found for this user" });
+      return res.status(404).json({ message: "No rating found for this user and brewery" });
     }
 
     res.json({ message: "Rating updated successfully" });
