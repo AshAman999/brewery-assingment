@@ -87,11 +87,11 @@ To run the backend server, follow these steps:
 
 ### Update Brewery Rating
 
-- Endpoint: `/rating/:id`
+- Endpoint: `/rating/:breweryId`
 - Method: `PUT`
 - Description: Updates an existing rating and comment for a brewery.
 - Request Parameters:
-  - `id` (string): Rating ID.
+  - `breweryId` (string): Brewry ID.
 - Request Body:
   - `rating` (number): Updated rating value (1-5).
   - `comment` (string): Updated review comment.
